@@ -1,0 +1,58 @@
+{
+  "name": "ModularApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "lodash": "^4.17.11",
+    "native-base": "^2.11.0",
+    "react": "16.6.3",
+    "react-native": "0.58.3",
+    "react-native-gesture-handler": "^1.0.15",
+    "react-native-linear-gradient": "^2.5.3",
+    "react-navigation": "^3.1.5"
+  },
+  "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
+    "jest": "24.1.0",
+    "jest-fetch-mock": "^2.1.0",
+    "jest-mock-axios": "^2.1.11",
+    "jsdom": "^13.2.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|native-base|react-navigation)"
+    ],
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.test.js?(x)",
+      "<rootDir>/src/**/*.test.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/e2e"
+    ],
+    "setupFiles": [
+      "<rootDir>/jest/setup.js"
+    ]
+  },
+  "rnpm": {
+    "assets": [
+      "./src/assets/fonts/"
+    ]
+  }
+}
