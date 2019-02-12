@@ -11,3 +11,5 @@ export {
   API_URL,
   API_TIMEOUT
 } from './constants'
+
+export { default as Navigator } from './navigator'

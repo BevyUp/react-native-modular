@@ -2,23 +2,17 @@ import React, { Component } from 'react'
 import { Root } from 'native-base'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 
-import {
-  Utils,
-  Navigation,
-  HomeComponent,
-} from './'
-import {
-  Navigator
-} from 'user-module'
+import { Navigator as CoreNavigator, Utils, Navigation } from './'
+import { Navigator as UserNavigator } from 'user-module'
 
 const AppNavigator = createStackNavigator(
   {
-    HomeComponent: { screen: HomeComponent },
-    UserModule: { screen: Navigator }
+    CoreModule: { screen: CoreNavigator },
+    UserModule: { screen: UserNavigator }
   },
   {
-    initialRouteName: 'HomeComponent',
-    headerMode: 'none'
+    initialRouteName: 'CoreModule',
+    headerMode: 'none',
   }
 )
 const AppContainer = createAppContainer(AppNavigator)

@@ -51,6 +51,17 @@ export const navigate = (routeName, params) => {
 }
 
 /**
+ * Navigate to the previous screen
+ */
+export const goBack = () => {
+  _navigator.dispatch(
+    NavigationActions.back({
+      key: null
+    })
+  )
+}
+
+/**
  * Reset the history of the navigation with a new route
  * @param {*} routeName - The name of the new route
  * @param {*} params - Params of the navigation
@@ -117,6 +128,7 @@ export const mapNavigationStateParamsToProps = ScreenComponent => {
 
 // add other navigation functions that you need and export them
 export default {
+  goBack,
   navigate,
   navigateRoot,
   setTopLevelNavigator,

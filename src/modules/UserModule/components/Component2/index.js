@@ -6,7 +6,12 @@ import {
   Body,
   Title,
   Content,
+  Left,
+  Right,
+  Button,
+  Icon,
 } from 'native-base'
+import { Navigation } from 'core-module'
 
 const propTypes = {
   prop1: PropTypes.number,
@@ -23,12 +28,19 @@ const defaultProps = {
 
 class Component2 extends Component {
   render() {
+    const { navigation } = this.props
     return (
       <Container>
         <Header>
-          <Body>
+          <Left>
+            <Button onPress={() => navigation.goBack(null)} icon transparent>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body style={{flex: 3}}>
             <Title>User Component</Title>
           </Body>
+          <Right></Right>
         </Header>
         <Content>
         </Content>

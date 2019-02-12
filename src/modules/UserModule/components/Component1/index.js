@@ -3,11 +3,14 @@ import PropTypes from 'prop-types'
 import {
   Container,
   Header,
+  Left,
+  Right,
   Body,
   Title,
   Content,
   Button,
   Text,
+  Icon,
 } from 'native-base'
 
 /**
@@ -50,13 +53,22 @@ class Component1 extends Component {
     return (
       <Container>
         <Header>
-          <Body>
-            <Title>Debug Core Navigation Service</Title>
+          <Left>
+            <Button onPress={() => Navigation.goBack()} icon transparent>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body style={{flex: 3}}>
+            <Title>Debug Navigation Service</Title>
           </Body>
+          <Right></Right>
         </Header>
         <Content>
-          <Button full dark onPress={() => Navigation.navigateRoot('HomeComponent')}>
-            <Text allowFontScaling={false} uppercase={false}>{ 'Navegate to home screen'.toUpperCase() }</Text>
+          <Button style={{margin: 20}} full primary onPress={() => Navigation.navigate('Component2')}>
+            <Text allowFontScaling={false} uppercase={true}>Component 2</Text>
+          </Button>
+          <Button style={{margin: 20, marginTop: 0}} full dark onPress={() => Navigation.navigateRoot('CoreModule')}>
+            <Text allowFontScaling={false} uppercase={true}>Reset history and set root</Text>
           </Button>
         </Content>
       </Container>
