@@ -156,18 +156,6 @@ export const mapNavigationStateParamsToProps = ScreenComponent => {
   }
 }
 
-export const renderNavigator = Navigator => {
-  return class extends Component {
-    static router = Navigator.router;
-  
-    render() {
-      return (
-        <Navigator navigation={this.props.navigation} />
-      );
-    }
-  }
-}
-
 // add other navigation functions that you need and export them
 export default {
   goBack,
@@ -177,5 +165,4 @@ export default {
   getActiveRouteName,
   setPreviousState,
   getPreviousState,
-  renderNavigator,
 }
