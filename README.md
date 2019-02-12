@@ -1,4 +1,8 @@
-# Modular Apps
+# React Native Modular
+Modular app with React Native
+
+![React Native Modular](img/react-native-modular-png)
+
 
 ## Modules
 - **CoreModule**: TODO:Describe the common components, the minimum dependencies that the app has, the utilities and common methods to reuse code through the different modules.
