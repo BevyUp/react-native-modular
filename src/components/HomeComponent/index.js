@@ -42,7 +42,7 @@ class HomeComponent extends Component {
         title: "User Module",
         components: [
           { title: "User Component 1", key: "Component1", color: '#f47100' },
-          { title: "User Component 2", key: "Component2", color: '#8b00dd' }
+          { title: "User Component 2", key: "Component2", color: '#8b00dd', newRoot: true }
         ]
       }
     ]
@@ -69,24 +69,30 @@ class HomeComponent extends Component {
             <View key={title}>
               <Text style={Style.titleModule}>{title}</Text>
               <Grid>
-                {components.map(({ title, color, key }) => (
+                {components.map(({ title, color, key, newRoot }) => (
                   <Col key={key}>
-                    <Card style={{backgroundColor: color}}>
+                    <Card style={{ backgroundColor: color }}>
                       <CardItem header style={Style.cardHeader}>
                         <Text style={Style.titleComponent}>{title}</Text>
                       </CardItem>
                       <CardItem style={Style.cardContent}>
                       </CardItem>
-                      <CardItem 
+                      <CardItem
                         footer
-                        button 
+                        button
                         style={Style.cardFooter}
                         onPress={() => Navigation.navigate(key)}
                       >
                         <Button
                           dark
                           style={Style.componentButton}
-                          onPress={() => Navigation.navigate(key)}
+                          onPress={
+                            () => {
+                              const params = { moduleName: 'UserModule' }
+                              if (newRoot) Navigation.navigateToModule(key, params)
+                              else Navigation.navigate(key, params)
+                            }
+                          }
                         >
                           <Text allowFontScaling={false} uppercase={false}>
                             Navigate

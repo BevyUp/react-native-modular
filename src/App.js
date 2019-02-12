@@ -7,14 +7,17 @@ import { Navigator as UserNavigator } from 'user-module'
 
 const AppNavigator = createStackNavigator(
   {
-    CoreModule: { screen: CoreNavigator },
-    UserModule: { screen: UserNavigator }
+    CoreModule: CoreNavigator,
+    UserModule: UserNavigator,
   },
   {
     initialRouteName: 'CoreModule',
     headerMode: 'none',
   }
 )
+
+Navigation.supportNestedRouter(AppNavigator)
+
 const AppContainer = createAppContainer(AppNavigator)
 
 class App extends Component {
@@ -22,8 +25,7 @@ class App extends Component {
   onNavigationStateChange(prevState, currentState) {
     const currentScreen = Navigation.getActiveRouteName(currentState)
     const prevScreen = Navigation.getActiveRouteName(prevState)
-
-    if(prevScreen !== currentScreen) {
+    if (prevScreen !== currentScreen) {
       //Screen tracking (Analytics tracker)
     }
   }
@@ -31,7 +33,7 @@ class App extends Component {
   render() {
     return (
       <Root>
-        <AppContainer 
+        <AppContainer
           uriPrefix={Utils.getDeepLink()}
           onNavigationStateChange={(prev, current) => this.onNavigationStateChange(prev, current)}
           ref={navigatorRef => { Navigation.setTopLevelNavigator(navigatorRef) }}

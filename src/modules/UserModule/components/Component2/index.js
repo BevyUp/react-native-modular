@@ -27,6 +27,7 @@ const defaultProps = {
 }
 
 class Component2 extends Component {
+
   render() {
     return (
       <Container>

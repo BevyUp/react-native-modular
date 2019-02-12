@@ -1,8 +1,9 @@
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator, NavigationAction } from 'react-navigation'
 import {
   HomeComponent,
   CoreComponent1,
 } from './components'
+
 const routeConfig = {
   HomeComponent: {
     screen: HomeComponent
@@ -15,4 +16,7 @@ const navigatorConfig = {
   headerMode: 'none',
   initialRouteName: 'HomeComponent',
 }
-export default createStackNavigator(routeConfig, navigatorConfig)
+
+const stackNavigator = createStackNavigator(routeConfig, navigatorConfig)
+
+export default stackNavigator
