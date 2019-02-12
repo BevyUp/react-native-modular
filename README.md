@@ -1,7 +1,7 @@
 # React Native Modular
 Modular app with React Native
 
-![React Native Modular](img/react-native-modular-png)
+![React Native Modular](img/react-native-modular.png)
 
 
 ## Modules
