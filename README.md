@@ -1,8 +1,8 @@
 # React Native Modular
 Modular app with React Native
-
-![React Native Modular](img/react-native-modular.png)
-
+<p align="center">
+<img alt="React Native Modular" width="400px" src="img/react-native-modular.png">
+</p>
 
 ## Modules
 - **CoreModule**: TODO:Describe the common components, the minimum dependencies that the app has, the utilities and common methods to reuse code through the different modules.
