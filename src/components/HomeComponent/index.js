@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Image, View } from "react-native";
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Image, View } from "react-native"
 import {
   Container,
   Header,
@@ -13,10 +13,12 @@ import {
   Right,
   Card,
   CardItem
-} from "native-base";
-import { Col, Row, Grid } from "react-native-easy-grid";
-import Style from "./style";
-import Assets from "assets";
+} from "native-base"
+import { Col, Grid } from "react-native-easy-grid"
+import { Navigation } from 'core-module'
+
+import Style from "./style"
+import Assets from "assets"
 
 const propTypes = {
   navigation: PropTypes.shape({
@@ -25,9 +27,9 @@ const propTypes = {
       params: PropTypes.object
     }).isRequired
   }).isRequired
-};
+}
 
-const defaultProps = {};
+const defaultProps = {}
 
 class HomeComponent extends Component {
   state = {
@@ -44,11 +46,11 @@ class HomeComponent extends Component {
         ]
       }
     ]
-  };
+  }
 
   render() {
-    const { modules } = this.state;
-    const { navigation } = this.props;
+    const { modules } = this.state
+    const { navigation } = this.props
     return (
       <Container>
         <Header>
@@ -79,12 +81,12 @@ class HomeComponent extends Component {
                         footer
                         button 
                         style={Style.cardFooter}
-                        onPress={() => navigation.navigate(key)}
+                        onPress={() => Navigation.navigate(key)}
                       >
                         <Button
                           dark
                           style={Style.componentButton}
-                          onPress={() => navigation.navigate(key)}
+                          onPress={() => Navigation.navigate(key)}
                         >
                           <Text allowFontScaling={false} uppercase={false}>
                             Navigate
@@ -99,11 +101,11 @@ class HomeComponent extends Component {
           ))}
         </Content>
       </Container>
-    );
+    )
   }
 }
 
-HomeComponent.propTypes = propTypes;
-HomeComponent.defaultProps = defaultProps;
+HomeComponent.propTypes = propTypes
+HomeComponent.defaultProps = defaultProps
 
-export default HomeComponent;
+export default HomeComponent

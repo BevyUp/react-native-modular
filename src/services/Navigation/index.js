@@ -10,6 +10,7 @@ import {
  */
 let _navigator
 let _previousState = null
+let _keys = []
 
 /**
  * Set the status of a route to return to that screen (Useful for redirecting by inactivity)
@@ -42,10 +43,14 @@ export const setTopLevelNavigator = navigatorRef => {
  * @param {object} params - The params of the new route
  */
 export const navigate = (routeName, params) => {
+  const route = getActiveRoute()
+  if (route && route.key) {
+    _keys.push(route.key)
+  }
   _navigator.dispatch(
     NavigationActions.navigate({
       routeName,
-      params,
+      params
     })
   )
 }
@@ -54,10 +59,14 @@ export const navigate = (routeName, params) => {
  * Navigate to the previous screen
  */
 export const goBack = () => {
+  const lastKey = _keys.pop()
+  if (!_keys.length) {
+    _navigator.dispatch(
+      StackActions.popToTop()
+    )
+  }
   _navigator.dispatch(
-    NavigationActions.back({
-      key: null
-    })
+    NavigationActions.back(lastKey)
   )
 }
 
@@ -74,9 +83,11 @@ export const navigateRoot = (routeName, params, backRouteName) => {
   }
   let index = 0
   let actions = []
+  _keys = []
   if (backRouteName) {
     index = 1
     actions.push(NavigationActions.navigate({ routeName: backRouteName }))
+    _keys = [backRouteName]
   }
   actions.push(NavigationActions.navigate(newRoute))
   const resetAction = StackActions.reset({
@@ -88,10 +99,10 @@ export const navigateRoot = (routeName, params, backRouteName) => {
 }
 
 /**
- * A recursive function to get the name of the active route
+ * A recursive function to get the active route
  * @param {object} navigationState - The state of the navigation with their routes
  */
-export const getActiveRouteName = navigationState => {
+export const getActiveRoute = navigationState => {
   navigationState = navigationState || get(_navigator, 'state.nav')
   if (!navigationState || !navigationState.routes) {
     return null
@@ -99,9 +110,18 @@ export const getActiveRouteName = navigationState => {
   const route = navigationState.routes[navigationState.index]
   // dive into nested navigators
   if (route.routes) {
-    return getActiveRouteName(route)
+    return getActiveRoute(route)
   }
-  return route.routeName
+  return route
+}
+
+/**
+ * A recursive function to get the name of the active route
+ * @param {object} navigationState - The state of the navigation with their routes
+ */
+export const getActiveRouteName = navigationState => {
+  const route = getActiveRoute(navigationState)
+  return route && route.routeName
 }
 
 /**

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import {
   Container,
@@ -12,6 +11,7 @@ import {
   Button,
   Icon
 } from 'native-base'
+import { Navigation } from 'core-module'
 
 const propTypes = {
   prop1: PropTypes.number,
@@ -33,7 +33,7 @@ class CoreComponent1 extends Component {
       <Container>
         <Header>
           <Left>
-            <Button onPress={() => navigation.goBack()} icon transparent>
+            <Button onPress={() => Navigation.goBack()} icon transparent>
               <Icon name='arrow-back' />
             </Button>
           </Left>

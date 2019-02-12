@@ -28,12 +28,11 @@ const defaultProps = {
 
 class Component2 extends Component {
   render() {
-    const { navigation } = this.props
     return (
       <Container>
         <Header>
           <Left>
-            <Button onPress={() => navigation.goBack(null)} icon transparent>
+            <Button onPress={() => Navigation.goBack()} icon transparent>
               <Icon name='arrow-back' />
             </Button>
           </Left>
