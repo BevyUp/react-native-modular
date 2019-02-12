@@ -7,8 +7,8 @@ import { Navigator as UserNavigator } from 'user-module'
 
 const AppNavigator = createStackNavigator(
   {
-    CoreModule: { screen: CoreNavigator },
-    UserModule: { screen: UserNavigator }
+    CoreModule: CoreNavigator,
+    UserModule: UserNavigator,
   },
   {
     initialRouteName: 'CoreModule',

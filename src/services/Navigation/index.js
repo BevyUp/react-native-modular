@@ -10,7 +10,7 @@ import {
  */
 let _navigator
 let _previousState = null
-let _keys = []
+let _routes = []
 
 /**
  * Set the status of a route to return to that screen (Useful for redirecting by inactivity)
@@ -45,7 +45,7 @@ export const setTopLevelNavigator = navigatorRef => {
 export const navigate = (routeName, params) => {
   const route = getActiveRoute()
   if (route && route.key) {
-    _keys.push(route.key)
+    _routes.push(route)
   }
   _navigator.dispatch(
     NavigationActions.navigate({
@@ -59,15 +59,21 @@ export const navigate = (routeName, params) => {
  * Navigate to the previous screen
  */
 export const goBack = () => {
-  const lastKey = _keys.pop()
-  if (!_keys.length) {
+  const lastRoute = _routes.pop()
+  if (lastRoute) {
     _navigator.dispatch(
-      StackActions.popToTop()
+      NavigationActions.navigate({
+        key: lastRoute.key,
+        routeName: lastRoute.routeName,
+        params: lastRoute.params
+      })
     )
   }
-  _navigator.dispatch(
-    NavigationActions.back(lastKey)
-  )
+  else {
+    _navigator.dispatch(
+      NavigationActions.back()
+    )
+  }
 }
 
 /**
@@ -83,11 +89,15 @@ export const navigateRoot = (routeName, params, backRouteName) => {
   }
   let index = 0
   let actions = []
-  _keys = []
+  _routes = []
   if (backRouteName) {
     index = 1
-    actions.push(NavigationActions.navigate({ routeName: backRouteName }))
-    _keys = [backRouteName]
+    const backRoute = {
+      routeName: backRouteName,
+      key: backRouteName
+    }
+    actions.push(NavigationActions.navigate(backRoute))
+    _routes = [backRoute]
   }
   actions.push(NavigationActions.navigate(newRoute))
   const resetAction = StackActions.reset({
@@ -146,6 +156,18 @@ export const mapNavigationStateParamsToProps = ScreenComponent => {
   }
 }
 
+export const renderNavigator = Navigator => {
+  return class extends Component {
+    static router = Navigator.router;
+  
+    render() {
+      return (
+        <Navigator navigation={this.props.navigation} />
+      );
+    }
+  }
+}
+
 // add other navigation functions that you need and export them
 export default {
   goBack,
@@ -155,4 +177,5 @@ export default {
   getActiveRouteName,
   setPreviousState,
   getPreviousState,
+  renderNavigator,
 }
