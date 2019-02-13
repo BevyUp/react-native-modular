@@ -10,7 +10,6 @@ import {
   Right,
   Button,
   Icon,
-  Text,
 } from 'native-base'
 import { Navigation } from 'core-module'
 
@@ -27,7 +26,7 @@ const defaultProps = {
   prop2: 100
 }
 
-class Component2 extends Component {
+class Component3 extends Component {
   render() {
     return (
       <Container>
@@ -38,21 +37,18 @@ class Component2 extends Component {
             </Button>
           </Left>
           <Body style={{flex: 3}}>
-            <Title>Component 2</Title>
+            <Title>Component 3</Title>
           </Body>
           <Right></Right>
         </Header>
         <Content>
-          <Button style={{margin: 20}} full primary onPress={() => Navigation.navigate('Component3')}>
-            <Text allowFontScaling={false} uppercase={true}>Component 3</Text>
-          </Button>
         </Content>
       </Container>
     )
   }
 }
 
-Component2.propTypes = propTypes
-Component2.defaultProps = defaultProps
+Component3.propTypes = propTypes
+Component3.defaultProps = defaultProps
 
-export default Component2
+export default Component3

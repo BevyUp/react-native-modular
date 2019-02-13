@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { NavigationActions, StackActions } from 'react-navigation'
 import {
-  get
+  get,
+  cloneDeepWith
 } from 'lodash'
 
 /**
@@ -109,6 +110,38 @@ export const navigateRoot = (routeName, params, backRouteName) => {
 }
 
 /**
+ * Get the previous route of a specific route
+ * @param {object} navigationState - The state of the navigation with their routes
+ * @param {string} routeName - The name of the route
+ */
+export const replacePreviousRouteByRouteName = (navigationState, routeName) => {
+  navigationState = navigationState || get(_navigator, 'state.nav')
+  if (!navigationState || !navigationState.routes) {
+    return null
+  }
+  const route = navigationState.routes[navigationState.index]
+  if (route.routeName === routeName) {
+    const previousRoute = navigationState.routes[navigationState.index-1]
+    const lastRoute = _routes[_routes.length - 1]
+    if (previousRoute && lastRoute && previousRoute.key !== lastRoute.key) {
+      return replaceLastRoute(navigationState)
+    }
+  }
+  // dive into nested navigators
+  if (route.routes) {
+    route.index = 0
+    return replacePreviousRouteByRouteName(route, routeName)
+  }
+  const nextIndex = navigationState.index + 1
+  const nextRoute = navigationState.routes[nextIndex]
+  if (nextRoute) {
+    navigationState.index = nextIndex
+    return replacePreviousRouteByRouteName(navigationState, routeName)
+  }
+  return null
+}
+
+/**
  * A recursive function to get the active route
  * @param {object} navigationState - The state of the navigation with their routes
  */
@@ -156,6 +189,39 @@ export const mapNavigationStateParamsToProps = ScreenComponent => {
   }
 }
 
+const replaceLastRoute = (state) => {
+  if (state.routes.length > 1 && state.index > 0) {
+    const oldIndex = state.index - 1
+    // remove one that we are replacing
+    state.routes.splice(oldIndex, 1)
+    // index now one less
+    state.index = oldIndex
+    return state
+  }
+  return null
+}
+
+const configureRouter = (StackNavigator) => {
+  // generally defer to the "real" one
+  const parentGetStateForAction = StackNavigator.router.getStateForAction
+  StackNavigator.router.getStateForAction = (action, inputState) => {
+    const state = parentGetStateForAction(action, inputState)
+
+    // fix it up if applicable
+    if (state && action.type === NavigationActions.NAVIGATE) {
+      if (action.params && action.params.replaceRoute) {
+        delete action.params.replaceRoute
+        replaceLastRoute(state)
+      }
+    }
+
+    // workaround to fix issue navigating to components from nested navigators
+    replacePreviousRouteByRouteName(state, action.routeName)
+
+    return state
+  }
+}
+
 // add other navigation functions that you need and export them
 export default {
   goBack,
@@ -165,4 +231,5 @@ export default {
   getActiveRouteName,
   setPreviousState,
   getPreviousState,
+  configureRouter,
 }

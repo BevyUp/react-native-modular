@@ -59,7 +59,7 @@ class Component1 extends Component {
             </Button>
           </Left>
           <Body style={{flex: 3}}>
-            <Title>Debug Navigation Service</Title>
+            <Title>Component 1</Title>
           </Body>
           <Right></Right>
         </Header>

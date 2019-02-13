@@ -15,6 +15,9 @@ const AppNavigator = createStackNavigator(
     headerMode: 'none',
   }
 )
+
+Navigation.configureRouter(AppNavigator)
+
 const AppContainer = createAppContainer(AppNavigator)
 
 class App extends Component {

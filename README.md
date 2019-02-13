@@ -39,5 +39,6 @@ UserModule/
 - [Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react)
 
 ## Resources ⛩
+- [How to structure your project](https://medium.freecodecamp.org/how-to-structure-your-project-and-manage-static-resources-in-react-native-6f4cfc947d92)
 - [Hooks](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html)
 - [React Native Navigation Patterns](https://codeburst.io/react-native-navigation-patterns-9c2b6d15ddb3)
