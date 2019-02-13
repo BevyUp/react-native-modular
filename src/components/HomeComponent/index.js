@@ -46,12 +46,6 @@ class HomeComponent extends Component {
           { title: "Component 1", key: "Component1", color: '#f47100' },
           { title: "Component 2", key: "Component2", color: '#8b00dd' },
           { title: "Component 3", key: "Component3", color: '#FF1744' },
-          { title: "Component 2", key: "Component2", color: '#8b00dd' },
-          { title: "Component 3", key: "Component3", color: '#FF1744' },
-          { title: "Component 2", key: "Component2", color: '#8b00dd' },
-          { title: "Component 3", key: "Component3", color: '#FF1744' },
-          { title: "Component 2", key: "Component2", color: '#8b00dd' },
-          { title: "Component 3", key: "Component3", color: '#FF1744' }
         ]
       }
     ]
