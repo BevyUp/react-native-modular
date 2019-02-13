@@ -4,7 +4,7 @@ import {
 
 export default StyleSheet.create({
   content: {
-    margin: 20,
+    backgroundColor: 'white'
   },
   componentButton: {
     justifyContent: 'center',
@@ -34,5 +34,13 @@ export default StyleSheet.create({
   },
   cardFooter: {
     backgroundColor: "transparent",
+  },
+  cardComponent: {
+    shadowOpacity: 0, 
+    margin:0, 
+    padding:0,
+    borderColor: 'white',
+    elevation: 0,
+    maxWidth: '100%',
   }
 })

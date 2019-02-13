@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { Image, View, FlatList } from "react-native"
+import { Image, View, FlatList, SafeAreaView } from "react-native"
 import {
   Container,
   Header,
@@ -32,6 +32,7 @@ const propTypes = {
 const defaultProps = {}
 
 class HomeComponent extends Component {
+  itemWidth = 150
   state = {
     numColumns: 2,
     modules: [
@@ -44,6 +45,12 @@ class HomeComponent extends Component {
         components: [
           { title: "Component 1", key: "Component1", color: '#f47100' },
           { title: "Component 2", key: "Component2", color: '#8b00dd' },
+          { title: "Component 3", key: "Component3", color: '#FF1744' },
+          { title: "Component 2", key: "Component2", color: '#8b00dd' },
+          { title: "Component 3", key: "Component3", color: '#FF1744' },
+          { title: "Component 2", key: "Component2", color: '#8b00dd' },
+          { title: "Component 3", key: "Component3", color: '#FF1744' },
+          { title: "Component 2", key: "Component2", color: '#8b00dd' },
           { title: "Component 3", key: "Component3", color: '#FF1744' }
         ]
       }
@@ -52,8 +59,7 @@ class HomeComponent extends Component {
 
   onLayout = (event) => {
     const { width } = event.nativeEvent.layout
-    const itemWidth = 160
-    let numColumns = Math.floor(width / itemWidth)
+    let numColumns = Math.floor(width / this.itemWidth)
     if (numColumns < 1) numColumns = 2
     this.setState({ numColumns })
   }
@@ -61,7 +67,7 @@ class HomeComponent extends Component {
   render() {
     const { modules, numColumns } = this.state
     return (
-      <Container onLayout={(e) => this.onLayout(e)}>
+      <Container>
         <Header>
           <Left />
           <Body style={{ flex: 3 }}>
@@ -73,18 +79,24 @@ class HomeComponent extends Component {
             </Button>
           </Right>
         </Header>
-        <Content style={Style.content}>
+        <Content style={Style.content} showsVerticalScrollIndicator={false}>
+          <SafeAreaView>
+          <View onLayout={(e) => this.onLayout(e)}>
           {modules.map(({ title, components }) => (
-            <View key={title}>
+            <View style={{flex: 1, alignItems: 'center'}} key={title}>
               <Text style={Style.titleModule}>{title}</Text>
               <FlatList
                 data={components}
                 key={title + numColumns}
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={numColumns}
+                showsVerticalScrollIndicator={false}
+                alwaysBounceVertical={true}
+                horizontal={false}
+                directionalLockEnabled={true}
                 contentContainerStyle={{ margin: 0 }}
                 renderItem={({ item: { title, color, key }, index }) => (
-                  <Card style={{backgroundColor: color, width: 160, maxWidth: '100%',}}>
+                  <Card style={[Style.cardComponent, {backgroundColor: color, width: this.itemWidth}]}>
                     <CardItem header style={Style.cardHeader}>
                       <Text style={Style.titleComponent}>{title}</Text>
                     </CardItem>
@@ -111,6 +123,8 @@ class HomeComponent extends Component {
               />
             </View>
           ))}
+          </View>
+          </SafeAreaView>
         </Content>
       </Container>
     )
