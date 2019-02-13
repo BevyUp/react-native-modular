@@ -110,7 +110,7 @@ export const navigateRoot = (routeName, params, backRouteName) => {
 }
 
 /**
- * Get the previous route of a specific route
+ * Replace a wrong previous route to fix issues navigating from nested navigators
  * @param {object} navigationState - The state of the navigation with their routes
  * @param {string} routeName - The name of the route
  */

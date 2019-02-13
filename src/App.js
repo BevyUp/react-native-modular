@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Root } from 'native-base'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 
-import { Navigator as CoreNavigator, Utils, Navigation } from './'
+import { Navigator as CoreNavigator, Utils, Navigation } from 'core-module'
 import { Navigator as UserNavigator } from 'user-module'
 
 const AppNavigator = createStackNavigator(

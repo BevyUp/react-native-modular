@@ -16,9 +16,12 @@ src/
 │   ├── Navigation
 │   ├── Network
 │   └── Utils
-└── modules
+├── modules
 │   ├── UserModule
 │   └── ...
+├── assets
+│   └── package.json
+├── navigator.js
 └── package.json
 ```
 - **UserModule**: TODO:Describe the purpose of this module in the business, the components that the module has, services and other utilities.
@@ -32,6 +35,7 @@ UserModule/
 │   ├── Service1
 │   └── Utils
 ├── readme.md
+├── navigator.js
 └── package.json
 ```
 
