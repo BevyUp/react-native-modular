@@ -10,6 +10,7 @@ import {
   Right,
   Button,
   Icon,
+  Text,
 } from 'native-base'
 import { Navigation } from 'core-module'
 
@@ -42,6 +43,12 @@ class Component3 extends Component {
           <Right></Right>
         </Header>
         <Content>
+          <Button style={{margin: 20}} full primary onPress={() => Navigation.navigate('Component1')}>
+            <Text allowFontScaling={false} uppercase={true}>Component 1</Text>
+          </Button>
+          <Button style={{margin: 20, marginTop: 0}} full dark onPress={() => Navigation.navigateRoot({ routeName: 'CoreModule' })}>
+            <Text allowFontScaling={false} uppercase={true}>Reset history</Text>
+          </Button>
         </Content>
       </Container>
     )

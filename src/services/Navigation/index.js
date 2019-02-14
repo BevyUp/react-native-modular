@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { NavigationActions, StackActions } from 'react-navigation'
 import {
   get,
-  cloneDeepWith
+  isObject,
+  findIndex
 } from 'lodash'
 
 /**
@@ -12,6 +13,9 @@ import {
 let _navigator
 let _previousState = null
 let _routes = []
+
+// @flow
+const routeType : { key?: string, params?: object, routeName: string} = {}
 
 /**
  * Set the status of a route to return to that screen (Useful for redirecting by inactivity)
@@ -40,19 +44,32 @@ export const setTopLevelNavigator = navigatorRef => {
 
 /**
  * Navigate from any component or service
- * @param {string} routeName - The name of the route to navigate
+ * @param {(string|object)} routeName - The name of the route to navigate
  * @param {object} params - The params of the new route
+ * @param {object} key - The key of the new route
  */
-export const navigate = (routeName, params) => {
+export const navigate = (routeName, params, key) => {
+  if (isObject(routeName)) {
+    params = routeName.params
+    key = routeName.key
+    routeName = routeName.routeName
+  }
+  let options = {
+    routeName,
+    params
+  }
+  if (key) {
+    options = {
+      ...options,
+      key
+    }
+  }
   const route = getActiveRoute()
   if (route && route.key) {
     _routes.push(route)
   }
   _navigator.dispatch(
-    NavigationActions.navigate({
-      routeName,
-      params
-    })
+    NavigationActions.navigate(options)
   )
 }
 
@@ -79,24 +96,16 @@ export const goBack = () => {
 
 /**
  * Reset the history of the navigation with a new route
- * @param {*} routeName - The name of the new route
- * @param {*} params - Params of the navigation
- * @param {*} backRouteName - The name of a previous route for back navigation
+ * @param {object} newRoute - The new route
+ * @param {object} backRoute - A previous route for back navigation
+ * @flow
  */
-export const navigateRoot = (routeName, params, backRouteName) => {
-  let newRoute = { routeName }
-  if (params) {
-    newRoute.params = params
-  }
+export const navigateRoot = (newRoute: routeType, backRoute: routeType) => {
   let index = 0
   let actions = []
   _routes = []
-  if (backRouteName) {
+  if (backRoute) {
     index = 1
-    const backRoute = {
-      routeName: backRouteName,
-      key: backRouteName
-    }
     actions.push(NavigationActions.navigate(backRoute))
     _routes = [backRoute]
   }
@@ -115,30 +124,32 @@ export const navigateRoot = (routeName, params, backRouteName) => {
  * @param {string} routeName - The name of the route
  */
 export const replacePreviousRouteByRouteName = (navigationState, routeName) => {
-  navigationState = navigationState || get(_navigator, 'state.nav')
-  if (!navigationState || !navigationState.routes) {
+  if (!navigationState || 
+      !navigationState.routes || 
+      navigationState.index < 0) {
     return null
   }
   const route = navigationState.routes[navigationState.index]
   if (route.routeName === routeName) {
-    const previousRoute = navigationState.routes[navigationState.index-1]
+    // Clear the local history of the routes navigating to a previous route
+    const routeIndex = findIndex(_routes, { key: route.key })
+    if (routeIndex >= 0) {
+      _routes = _routes.slice(0, routeIndex)
+    }
     const lastRoute = _routes[_routes.length - 1]
+    const previousRoute = navigationState.routes[navigationState.index-1]
     if (previousRoute && lastRoute && previousRoute.key !== lastRoute.key) {
       return replaceLastRoute(navigationState)
     }
+    return null
   }
   // dive into nested navigators
   if (route.routes) {
-    route.index = 0
+    route.index = route.routes.length - 1
     return replacePreviousRouteByRouteName(route, routeName)
   }
-  const nextIndex = navigationState.index + 1
-  const nextRoute = navigationState.routes[nextIndex]
-  if (nextRoute) {
-    navigationState.index = nextIndex
-    return replacePreviousRouteByRouteName(navigationState, routeName)
-  }
-  return null
+  navigationState.index--
+  return replacePreviousRouteByRouteName(navigationState, routeName)
 }
 
 /**
@@ -213,10 +224,10 @@ const configureRouter = (StackNavigator) => {
         delete action.params.replaceRoute
         replaceLastRoute(state)
       }
-    }
 
-    // workaround to fix issue navigating to components from nested navigators
-    replacePreviousRouteByRouteName(state, action.routeName)
+      // workaround to fix issue navigating to components from nested navigators
+      replacePreviousRouteByRouteName(state, action.routeName)
+    }
 
     return state
   }

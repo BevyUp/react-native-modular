@@ -46,6 +46,9 @@ class Component2 extends Component {
           <Button style={{margin: 20}} full primary onPress={() => Navigation.navigate('Component3')}>
             <Text allowFontScaling={false} uppercase={true}>Component 3</Text>
           </Button>
+          <Button style={{margin: 20, marginTop: 0}} full dark onPress={() => Navigation.navigateRoot({ routeName: 'CoreModule' })}>
+            <Text allowFontScaling={false} uppercase={true}>Reset history</Text>
+          </Button>
         </Content>
       </Container>
     )
