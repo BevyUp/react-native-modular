@@ -38,9 +38,6 @@ const defaultProps = {
 
 class Component1 extends Component {
 
-  static propTypes = propTypes
-  static defaultProps = defaultProps
-
   componentWillMount() {
     Utils.initialize()
   }
@@ -75,5 +72,8 @@ class Component1 extends Component {
     )
   }
 }
+
+Component1.propTypes = propTypes
+Component1.defaultProps = defaultProps
 
 export default Component1
