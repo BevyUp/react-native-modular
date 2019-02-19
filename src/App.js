@@ -6,18 +6,15 @@ import { Navigator as CoreNavigator, Utils, Navigation } from 'core-module'
 import { Navigator as UserNavigator } from 'user-module'
 
 const AppNavigator = createStackNavigator(
-  {
+  { 
     CoreModule: CoreNavigator,
     UserModule: UserNavigator,
-  },
-  {
+  }, {
     initialRouteName: 'CoreModule',
     headerMode: 'none',
   }
 )
-
 Navigation.configureRouter(AppNavigator)
-
 const AppContainer = createAppContainer(AppNavigator)
 
 class App extends Component {

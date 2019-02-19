@@ -1,3 +1,8 @@
+/**
+ * Navigation Service
+ * @flow
+ */
+
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { NavigationActions, StackActions } from 'react-navigation'
@@ -14,11 +19,11 @@ let _navigator
 let _previousState = null
 let _routes = []
 
-// @flow
-const routeType : { key?: string, params?: object, routeName: string} = {}
+type paramsType = { [key: string]: any }
+type routeType = { key?: string, params?: paramsType, routeName?: string}
 
 /**
- * Set the status of a route to return to that screen (Useful for redirecting by inactivity)
+ * Set the status of a route to return later
  * @param {object} state - The state of a previous route
  */
 export const setPreviousState = state => {
@@ -26,7 +31,7 @@ export const setPreviousState = state => {
 }
 
 /**
- * Get the routeName and params of a previous screen
+ * Get the info of a previous route
  */
 export const getPreviousState = () => {
   const previousState = _previousState
@@ -36,7 +41,7 @@ export const getPreviousState = () => {
 
 /**
  * Save the navigator of the App
- * @param {object} navigatorRef - The navigator of the main component
+ * @param {object} navigatorRef - The navigator of the app
  */
 export const setTopLevelNavigator = navigatorRef => {
   _navigator = navigatorRef
@@ -44,25 +49,19 @@ export const setTopLevelNavigator = navigatorRef => {
 
 /**
  * Navigate from any component or service
- * @param {(string|object)} routeName - The name of the route to navigate
+ * @param {(string|object)} routeName - The name of the route or all the info of the new route
  * @param {object} params - The params of the new route
  * @param {object} key - The key of the new route
  */
-export const navigate = (routeName, params, key) => {
+export const navigate = (routeName: string | routeType, params?: paramsType, key?: string) => {
   if (isObject(routeName)) {
     params = routeName.params
     key = routeName.key
     routeName = routeName.routeName
   }
-  let options = {
-    routeName,
-    params
-  }
+  let options = { routeName, params }
   if (key) {
-    options = {
-      ...options,
-      key
-    }
+    options = { ...options, key }
   }
   const route = getActiveRoute()
   if (route && route.key) {
@@ -74,7 +73,7 @@ export const navigate = (routeName, params, key) => {
 }
 
 /**
- * Navigate to the previous screen
+ * Navigate to the previous screen, use navigate method instead to navigate to a previous screen using the key of the route.
  */
 export const goBack = () => {
   const lastRoute = _routes.pop()
@@ -97,10 +96,10 @@ export const goBack = () => {
 /**
  * Reset the history of the navigation with a new route
  * @param {object} newRoute - The new route
- * @param {object} backRoute - A previous route for back navigation
+ * @param {object} backRoute - An optional previous route for back navigation
  * @flow
  */
-export const navigateRoot = (newRoute: routeType, backRoute: routeType) => {
+export const navigateRoot = (newRoute: routeType, backRoute?: routeType) => {
   let index = 0
   let actions = []
   _routes = []
@@ -200,6 +199,10 @@ export const mapNavigationStateParamsToProps = ScreenComponent => {
   }
 }
 
+/**
+ * Replace the last route from the state of the navigation
+ * @param {object} state - The state of the navigation
+ */
 const replaceLastRoute = (state) => {
   if (state.routes.length > 1 && state.index > 0) {
     const oldIndex = state.index - 1
@@ -212,6 +215,10 @@ const replaceLastRoute = (state) => {
   return null
 }
 
+/**
+ * Extend the behavior of the navigation
+ * @param {object} StackNavigator - The stack navigator to change the configuration of the router
+ */
 const configureRouter = (StackNavigator) => {
   // generally defer to the "real" one
   const parentGetStateForAction = StackNavigator.router.getStateForAction
