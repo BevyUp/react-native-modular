@@ -20,14 +20,7 @@ import { Navigation } from 'core-module'
 import Style from "./style"
 import Assets from "assets"
 
-const propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    state: PropTypes.shape({
-      params: PropTypes.object
-    }).isRequired
-  }).isRequired
-}
+const propTypes = {}
 
 const defaultProps = {}
 
