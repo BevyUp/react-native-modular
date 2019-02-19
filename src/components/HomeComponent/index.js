@@ -43,8 +43,8 @@ class HomeComponent extends Component {
     ]
   }
 
-  onLayout = (event) => {
-    const { width } = event.nativeEvent.layout
+  onLayout = ({ nativeEvent }) => {
+    const { width } = nativeEvent.layout
     let numColumns = Math.floor(width / this.itemWidth)
     if (numColumns < 1) numColumns = 2
     this.setState({ numColumns })
@@ -53,7 +53,7 @@ class HomeComponent extends Component {
   render() {
     const { modules, numColumns } = this.state
     return (
-      <Container>
+      <Container onLayout={(e) => this.onLayout(e)}>
         <Header>
           <Left />
           <Body style={{ flex: 3 }}>
@@ -66,8 +66,6 @@ class HomeComponent extends Component {
           </Right>
         </Header>
         <Content style={Style.content} showsVerticalScrollIndicator={false}>
-          <SafeAreaView>
-          <View onLayout={(e) => this.onLayout(e)}>
           {modules.map(({ title, components }) => (
             <View style={{flex: 1, alignItems: 'center'}} key={title}>
               <Text style={Style.titleModule}>{title}</Text>
@@ -109,8 +107,6 @@ class HomeComponent extends Component {
               />
             </View>
           ))}
-          </View>
-          </SafeAreaView>
         </Content>
       </Container>
     )
