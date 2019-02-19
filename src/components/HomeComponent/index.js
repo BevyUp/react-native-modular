@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { Image, View, FlatList, SafeAreaView } from "react-native"
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Image, View, FlatList, SafeAreaView } from 'react-native'
 import {
   Container,
   Header,
@@ -13,12 +13,11 @@ import {
   Right,
   Card,
   CardItem
-} from "native-base"
-import { Col, Grid } from "react-native-easy-grid"
+} from 'native-base'
 import { Navigation } from 'core-module'
 
-import Style from "./style"
-import Assets from "assets"
+import Style from './style'
+import Assets from 'assets'
 
 const propTypes = {}
 
@@ -30,15 +29,15 @@ class HomeComponent extends Component {
     numColumns: 2,
     modules: [
       {
-        title: "Core Module",
-        components: [{ title: "Core Component 1", key: "CoreComponent1", color: '#03DAC5' }]
+        title: 'Core Module',
+        components: [{ title: 'Core Component 1', key: 'CoreComponent1', color: '#03DAC5' }]
       },
       {
-        title: "User Module",
+        title: 'User Module',
         components: [
-          { title: "Component 1", key: "Component1", color: '#f47100' },
-          { title: "Component 2", key: "Component2", color: '#8b00dd' },
-          { title: "Component 3", key: "Component3", color: '#FF1744' },
+          { title: 'Component 1', key: 'Component1', color: '#f47100' },
+          { title: 'Component 2', key: 'Component2', color: '#8b00dd' },
+          { title: 'Component 3', key: 'Component3', color: '#FF1744' },
         ]
       }
     ]
@@ -62,7 +61,7 @@ class HomeComponent extends Component {
           </Body>
           <Right>
             <Button icon transparent>
-              <Image source={Assets.images.scan} />
+              <Image resizeMode="contain" style={{ width: 30, height: 30 }} source={Assets.images.box} />
             </Button>
           </Right>
         </Header>

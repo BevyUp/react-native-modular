@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { 
+  Image, 
+  Dimensions,
+  Easing
+} from 'react-native'
 import {
   Container,
   Header,
@@ -9,9 +14,15 @@ import {
   Left,
   Right,
   Button,
-  Icon
+  Icon,
+  variables,
 } from 'native-base'
+import {
+  TranslateY,
+} from 'react-native-motion'
 import { Navigation } from 'core-module'
+import Assets from 'assets'
+import Style from './style'
 
 const propTypes = {
   prop1: PropTypes.number,
@@ -27,14 +38,24 @@ const defaultProps = {
 }
 
 class CoreComponent1 extends Component {
+
+  state = {
+    height: Dimensions.get('window').height
+  }
+
+  onLayout({ nativeEvent }) {
+    const { height } = nativeEvent.layout
+    this.setState({ height })
+  }
+
   render() {
-    const { navigation } = this.props
+    const { height } = this.state
     return (
-      <Container>
+      <Container onLayout={(e) => this.onLayout(e)}>
         <Header>
           <Left>
             <Button onPress={() => Navigation.goBack()} icon transparent>
-              <Icon name='arrow-back' />
+              <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body style={{flex: 3}}>
@@ -42,7 +63,10 @@ class CoreComponent1 extends Component {
           </Body>
           <Right></Right>
         </Header>
-        <Content>
+        <Content contentContainerStyle={Style.content}>
+          <TranslateY style={{ alignItems: 'center' }} easing={Easing.elastic()} delay={50} duration={500} initialValue={height} value={0} startOnDidMount={true}>
+            <Image style={Style.boxImage} source={Assets.images.cardboardBox} />
+          </TranslateY>
         </Content>
       </Container>
     )

@@ -52,7 +52,7 @@ class Component1 extends Component {
         <Header>
           <Left>
             <Button onPress={() => Navigation.goBack()} icon transparent>
-              <Icon name='arrow-back' />
+              <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body style={{flex: 3}}>
