@@ -9,12 +9,13 @@ import {
   Content,
   Button,
   Text,
-  Left,
   Right,
   Card,
-  CardItem
+  CardItem,
+  Left,
+  Icon,
 } from 'native-base'
-import { Navigation } from 'core-module'
+import { Navigation, Bundle, FooterComponent, MODULES } from '../../'
 
 import Style from './style'
 import Assets from 'assets'
@@ -24,36 +25,40 @@ const propTypes = {}
 const defaultProps = {}
 
 class HomeComponent extends Component {
-  itemWidth = 150
+
   state = {
-    numColumns: 2,
-    modules: [
-      {
-        title: 'Core Module',
-        components: [{ title: 'Core Component 1', key: 'CoreComponent1', color: '#03DAC5' }]
-      },
-      {
-        title: 'User Module',
-        components: [
-          { title: 'Component 1', key: 'Component1', color: '#f47100' },
-          { title: 'Component 2', key: 'Component2', color: '#8b00dd' },
-          { title: 'Component 3', key: 'Component3', color: '#FF1744' },
-        ]
-      }
-    ]
+    bundlesLoaded: {}
   }
 
-  onLayout = ({ nativeEvent }) => {
-    const { width } = nativeEvent.layout
-    let numColumns = Math.floor(width / this.itemWidth)
-    if (numColumns < 1) numColumns = 2
-    this.setState({ numColumns })
+  activeBundle(bundleName) {
+    Bundle.register(bundleName)
+    console.log('registered')
+    Bundle.setActive(bundleName)
+    console.log('activated')
+    Bundle.reload()
+    console.log('reloaded')
+  }
+
+  async loadBundle({ url, bundleName }) {
+    try {
+      await Bundle.download(url, bundleName)
+      console.log('downloaded')
+      this.activeBundle(bundleName)
+      
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  async componentWillMount() {
+    const bundlesLoaded = await Bundle.getAll()
+    this.setState({ bundlesLoaded })
   }
 
   render() {
-    const { modules, numColumns } = this.state
+    const { bundlesLoaded } = this.state
     return (
-      <Container onLayout={(e) => this.onLayout(e)}>
+      <Container>
         <Header>
           <Left />
           <Body style={{ flex: 3 }}>
@@ -65,49 +70,28 @@ class HomeComponent extends Component {
             </Button>
           </Right>
         </Header>
-        <Content style={Style.content} showsVerticalScrollIndicator={false}>
-          {modules.map(({ title, components }) => (
-            <View style={{flex: 1, alignItems: 'center'}} key={title}>
-              <Text style={Style.titleModule}>{title}</Text>
-              <FlatList
-                data={components}
-                key={title + numColumns}
-                keyExtractor={(item, index) => index.toString()}
-                numColumns={numColumns}
-                showsVerticalScrollIndicator={false}
-                alwaysBounceVertical={true}
-                horizontal={false}
-                directionalLockEnabled={true}
-                contentContainerStyle={{ margin: 0 }}
-                renderItem={({ item: { title, color, key }, index }) => (
-                  <Card style={[Style.cardComponent, {backgroundColor: color, width: this.itemWidth}]}>
-                    <CardItem header style={Style.cardHeader}>
-                      <Text style={Style.titleComponent}>{title}</Text>
-                    </CardItem>
-                    <CardItem style={Style.cardContent}>
-                    </CardItem>
-                    <CardItem 
-                      footer
-                      button 
-                      style={Style.cardFooter}
-                      onPress={() => Navigation.navigate(key)}
-                    >
-                      <Button
-                        dark
-                        style={Style.componentButton}
-                        onPress={() => Navigation.navigate(key)}
-                      >
-                        <Text allowFontScaling={false} uppercase={false}>
-                          Navigate
-                        </Text>
+        <Content>
+          {
+            MODULES.map((module) => (
+              <Card key={module}>
+                <CardItem header>
+                  <Text>{module}</Text>
+                </CardItem>
+                <CardItem footer>
+                  <Left>
+                    { !bundlesLoaded[module] && (
+                      <Button iconLeft>
+                        <Icon name='download' />
+                        <Text>Download</Text>
                       </Button>
-                    </CardItem>
-                  </Card>
-                )}
-              />
-            </View>
-          ))}
+                    )}
+                  </Left>
+                </CardItem>
+            </Card>
+            ))
+          }
         </Content>
+        <FooterComponent></FooterComponent>
       </Container>
     )
   }

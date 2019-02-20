@@ -1,17 +1,24 @@
 package com.modularapp;
 
 import android.app.Application;
+import android.net.Uri;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
+import org.mauritsd.reactnativedynamicbundle.RNDynamicBundlePackage;
+import org.mauritsd.reactnativedynamicbundle.RNDynamicBundleModule;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -25,6 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFSPackage(),
+            new RNDynamicBundlePackage(),
             new RNGestureHandlerPackage(),
             new LinearGradientPackage()
       );
@@ -33,6 +42,12 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected String getJSMainModuleName() {
       return "index";
+    }
+
+    @Nullable
+    @Override
+    protected String getJSBundleFile() {
+      return RNDynamicBundleModule.launchResolveBundlePath(MainApplication.this);
     }
   };
 

@@ -14,15 +14,25 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  /* We need to keep track of these because we may want to reinit the bridge later and
+   * will need them then.
+   */
+  self.launchOptions = launchOptions;
+
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+  // Dynamic Bundle
+  [RNDynamicBundle setDefaultBundleURL:jsCodeLocation];
+  RCTRootView *rootView = [self getRootViewForBundleURL:[RNDynamicBundle resolveBundleURL]];
+
+  // Default Bundle
+  /*RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"ModularApp"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
-  rootView.backgroundColor = [UIColor blackColor];
+  rootView.backgroundColor = [UIColor blackColor];*/
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
@@ -30,6 +40,30 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+/**
+ * Native changes required to support dynamic bundles
+ */
+- (void)dynamicBundle:(RNDynamicBundle *)dynamicBundle requestsReloadForBundleURL:(NSURL *)bundleURL
+{
+  self.window.rootViewController.view = [self getRootViewForBundleURL:bundleURL];
+}
+
+- (RCTRootView *)getRootViewForBundleURL:(NSURL *)bundleURL
+{
+  RCTBridge *bridge = [[RCTBridge alloc] initWithBundleURL:bundleURL
+                                            moduleProvider:nil
+                                             launchOptions:self.launchOptions];
+  RNDynamicBundle *dynamicBundle = [bridge moduleForClass:[RNDynamicBundle class]];
+  dynamicBundle.delegate = self;
+  
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"ModularApp"
+                                            initialProperties:nil];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  
+  return rootView;
 }
 
 @end

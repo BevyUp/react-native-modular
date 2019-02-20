@@ -15,10 +15,15 @@ export const APP_NAME = Platform.OS === 'ios' ? 'MyApp-iOS' : 'MyApp-Android'
 export const API_URL = `https://api${ENV === ENVIRONMENTS.NONPROD ? 'test' : ''}.mydomain.com`
 export const API_TIMEOUT = 10
 
+export const MODULES = [
+  'UserModule'
+]
+
 export default {
   ENVIRONMENTS,
   ENV,
   APP_NAME,
   API_URL,
-  API_TIMEOUT
+  API_TIMEOUT,
+  MODULES,
 }
