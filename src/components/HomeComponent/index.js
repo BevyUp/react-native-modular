@@ -31,11 +31,11 @@ class HomeComponent extends Component {
   }
 
   activeBundle(bundleName) {
-    Bundle.register(bundleName)
+    
     console.log('registered')
-    Bundle.setActive(bundleName)
+    //Bundle.setActive(bundleName)
     console.log('activated')
-    Bundle.reload()
+    //Bundle.reload()
     console.log('reloaded')
   }
 
@@ -80,7 +80,7 @@ class HomeComponent extends Component {
                 <CardItem footer>
                   <Left>
                     { !bundlesLoaded[module] && (
-                      <Button iconLeft>
+                      <Button iconLeft onPress={}>
                         <Icon name='download' />
                         <Text>Download</Text>
                       </Button>
