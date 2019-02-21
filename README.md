@@ -1,7 +1,7 @@
 # React Native Modular
-Modular app with React Native
+Modular app with dynamic bundles
 <p align="center">
-<img alt="React Native Modular" width="400px" src="img/react-native-modular.png">
+<img alt="React Native Modular with dynamic bundles" width="400px" src="img/dynamic-bundles.png">
 </p>
 
 ## Modules
