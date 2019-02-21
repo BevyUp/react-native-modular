@@ -4,10 +4,13 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'
 
 import { Navigator as CoreNavigator, Utils, Navigation } from 'core-module'
 import { Navigator as UserNavigator } from 'user-module'
+import { Navigator as AnimationNavigator } from 'animation-module'
 
 const AppNavigator = createStackNavigator(
   { 
     CoreModule: CoreNavigator,
+    UserModule: UserNavigator,
+    AnimationModule: AnimationNavigator,
   }, {
     initialRouteName: 'CoreModule',
     headerMode: 'none',

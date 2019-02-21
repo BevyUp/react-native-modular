@@ -16,7 +16,16 @@ export const API_URL = `https://api${ENV === ENVIRONMENTS.NONPROD ? 'test' : ''}
 export const API_TIMEOUT = 10
 
 export const MODULES = [
-  'UserModule'
+  {
+    title: 'User Module',
+    bundleName: 'UserModule',
+    url: 'https://dogfoodbu.blob.core.windows.net/bundles/user.bundle'
+  },
+  {
+    title: 'Animation Module',
+    bundleName: 'AnimationModule',
+    url: 'https://dogfoodbu.blob.core.windows.net/bundles/animation.bundle'
+  },
 ]
 
 export default {

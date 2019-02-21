@@ -16,7 +16,7 @@ import {
 /**
  * Load Core Services
  */
-import { Navigation } from 'core-module'
+import { Navigation, FooterComponent } from 'core-module'
 
 /**
  * Load Local Services
@@ -68,6 +68,7 @@ class Component1 extends Component {
             <Text allowFontScaling={false} uppercase={true}>Reset history</Text>
           </Button>
         </Content>
+        <FooterComponent></FooterComponent>
       </Container>
     )
   }

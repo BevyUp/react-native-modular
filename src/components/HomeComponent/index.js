@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Image, View, FlatList, SafeAreaView } from 'react-native'
+import { 
+  Image, 
+  View, 
+  FlatList, 
+  SafeAreaView,
+  ActivityIndicator,
+} from 'react-native'
 import {
   Container,
   Header,
@@ -10,12 +16,13 @@ import {
   Button,
   Text,
   Right,
-  Card,
-  CardItem,
+  List,
+  ListItem,
   Left,
   Icon,
+  Badge,
 } from 'native-base'
-import { Navigation, Bundle, FooterComponent, MODULES } from '../../'
+import { Navigation, Bundle, FooterComponent, MODULES } from 'core-module'
 
 import Style from './style'
 import Assets from 'assets'
@@ -27,36 +34,40 @@ const defaultProps = {}
 class HomeComponent extends Component {
 
   state = {
-    bundlesLoaded: {}
+    bundlesLoaded: {},
+    bundleNameToLoad: null,
+    timestamp: new Date()
   }
 
   activeBundle(bundleName) {
-    
-    console.log('registered')
-    //Bundle.setActive(bundleName)
-    console.log('activated')
-    //Bundle.reload()
-    console.log('reloaded')
+    Bundle.setActive(bundleName)
+    Bundle.reload()
   }
 
-  async loadBundle({ url, bundleName }) {
+  async loadBundle(url, bundleName) {
     try {
+      this.setState({ bundleNameToLoad: bundleName })
       await Bundle.download(url, bundleName)
-      console.log('downloaded')
-      this.activeBundle(bundleName)
-      
+      Bundle.register(bundleName)
+      await this.loadBundles()
+      this.setState({ bundleNameToLoad: null, timestamp: new Date() })
     } catch (error) {
       alert(error.message)
+      this.setState({ bundleNameToLoad: null })
     }
   }
 
-  async componentWillMount() {
+  async loadBundles() {
     const bundlesLoaded = await Bundle.getAll()
     this.setState({ bundlesLoaded })
   }
 
+  async componentWillMount() {
+    await this.loadBundles()
+  }
+
   render() {
-    const { bundlesLoaded } = this.state
+    const { bundlesLoaded, bundleNameToLoad, timestamp } = this.state
     return (
       <Container>
         <Header>
@@ -71,27 +82,43 @@ class HomeComponent extends Component {
           </Right>
         </Header>
         <Content>
+          <List>
           {
-            MODULES.map((module) => (
-              <Card key={module}>
-                <CardItem header>
-                  <Text>{module}</Text>
-                </CardItem>
-                <CardItem footer>
-                  <Left>
-                    { !bundlesLoaded[module] && (
-                      <Button iconLeft onPress={}>
-                        <Icon name='download' />
-                        <Text>Download</Text>
-                      </Button>
-                    )}
-                  </Left>
-                </CardItem>
-            </Card>
-            ))
+            MODULES.map(
+              ({ bundleName, url, title }) => bundlesLoaded[bundleName] ? (
+                <ListItem key={bundleName}>
+                  <Body>
+                    <Text>{title}</Text>
+                  </Body>
+                  <Right>
+                    <Button transparent onPress={() => this.activeBundle(bundleName)}>
+                      <Text>Active</Text>
+                    </Button>
+                  </Right>
+                </ListItem>
+              ) : (
+                <ListItem key={bundleName}>
+                  <Body>
+                    <Text>{title}</Text>
+                  </Body>
+                  <Right>
+                    {
+                      bundleNameToLoad === bundleName ? (
+                        <ActivityIndicator size="small" color="#0000ff" />
+                      ) : (
+                        <Button icon onPress={() => this.loadBundle(url, bundleName)}>
+                          <Icon name='download' />
+                        </Button>
+                      )
+                    }
+                  </Right>
+                </ListItem>
+              )
+            )
           }
+          </List>
         </Content>
-        <FooterComponent></FooterComponent>
+        <FooterComponent key={`footer${timestamp}`}></FooterComponent>
       </Container>
     )
   }

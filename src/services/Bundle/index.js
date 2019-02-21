@@ -10,10 +10,17 @@ import {
 import RNFS from 'react-native-fs'
 
 export const download = async (fromUrl, bundleName) => {
-  return RNFS.downloadFile({
-    fromUrl,
-    toFile: RNFS.DocumentDirectoryPath + `/${bundleName}.bundle`,
-  }).promise
+  return new Promise((resolve, reject) => {
+    RNFS.downloadFile({
+      fromUrl,
+      toFile: RNFS.DocumentDirectoryPath + `/${bundleName}.bundle`,
+    }).promise.then(({ statusCode }) => {
+      if (statusCode === 200)
+        resolve()
+      else
+        reject({ message : 'Error downloading the file' })
+    }).catch((err) => reject({ message : (err.description || err.message) }))
+  })
 }
 
 export const getActive = () => getActiveBundle()

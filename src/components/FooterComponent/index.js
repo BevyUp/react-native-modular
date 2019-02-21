@@ -6,7 +6,7 @@ import {
   Button,
   Text,
 } from 'native-base'
-import { Navigation } from 'core-module'
+import { Navigation, Bundle, MODULES } from 'core-module'
 import Assets from 'assets'
 import Style from './style'
 
@@ -17,28 +17,47 @@ const defaultProps = {}
 class FooterComponent extends Component {
 
   state = {
-    modules: [
-      {
-        title: 'Core Module',
-        active: true
-      },
-      {
-        title: 'User Module',
-        active: false,
-        disabled: true,
-        bundleName: 'UserModule',
-        url: 'https://dogfoodbu.blob.core.windows.net/nordstrom/bundles/user.bundle'
-      }
-    ]
+    bundlesLoaded: {},
+    bundleActivated: null
+  }
+
+  async loadBundles() {
+    const bundlesLoaded = await Bundle.getAll()
+    const bundleActivated = await Bundle.getActive()
+    this.setState({ bundlesLoaded, bundleActivated })
+  }
+
+  async componentWillMount() {
+    await this.loadBundles()
+  }
+
+  activeBundle(bundleName) {
+    this.setState({ bundleActivated: bundleName })
+    Bundle.setActive(bundleName)
+    Bundle.reload()
+  }
+
+  async navigateToCore() {
+    const bundleActivated = await Bundle.getActive()
+    if (bundleActivated) {
+      Bundle.setActive()
+      Bundle.reload()
+    }
+    else {
+      Navigation.navigateRoot({ routeName: 'CoreModule' })
+    }
   }
 
   render() {
-    const { modules } = this.state
+    const { bundlesLoaded, bundleActivated } = this.state
     return (
       <Footer>
         <FooterTab>
-        {modules.map(({ title, active, disabled }) => (
-          <Button key={title} active={active} disabled={disabled}>
+          <Button active={!bundleActivated} onPress={this.navigateToCore}>
+            <Text>Core Module</Text>
+          </Button>
+        {MODULES.map(({ title, bundleName }) => (
+          <Button onPress={() => this.activeBundle(bundleName)} key={title} active={bundleActivated === bundleName} disabled={!bundlesLoaded[bundleName]}>
             <Text>{title}</Text>
           </Button>
         ))}
