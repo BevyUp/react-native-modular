@@ -1,8 +1,9 @@
 # React Native Modular
 Modular app with React Native
-<p align="center">
-<img alt="React Native Modular" width="400px" src="img/react-native-modular.png">
-</p>
+
+| [Modules](https://github.com/proyecto26/react-native-modular/tree/master) | [Dynamic Bundles](https://github.com/proyecto26/react-native-modular/tree/dynamic-bundle) |
+| :--------------------------------------: | :----------------------------------: |
+| ![Modules](img/react-native-modular.png) | ![Modules](img/dynamic-bundles.png)  |
 
 ## Modules
 - **CoreModule**: TODO:Describe the common components, the minimum dependencies that the app has, the utilities and common methods to reuse code through the different modules.
