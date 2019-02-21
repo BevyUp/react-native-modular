@@ -1,5 +1,5 @@
 # React Native Modular
-Modular app with dynamic bundles
+Modular app with dynamic bundles using [react-native-dynamic-bundle](https://github.com/mauritsd/react-native-dynamic-bundle)
 <p align="center">
 <img alt="React Native Modular with dynamic bundles" width="400px" src="img/dynamic-bundles.png">
 </p>
