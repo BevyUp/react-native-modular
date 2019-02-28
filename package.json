@@ -18,7 +18,7 @@
     "native-base": "^2.11.0",
     "react": "16.6.3",
     "react-native": "0.58.3",
-    "react-native-dynamic-bundle": "git+https://github.com/jdnichollsc/react-native-dynamic-bundle.git",
+    "react-native-dynamic-bundle": "git+https://github.com/mauritsd/react-native-dynamic-bundle.git",
     "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-linear-gradient": "^2.5.3",
