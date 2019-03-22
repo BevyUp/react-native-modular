@@ -55,10 +55,6 @@ Thanks goes to these wonderful people:
 | :---: | :---: |
 <!-- CONTRIBUTORS-LIST:END -->
 
-## Supporting 🍻
-I believe in Unicorns 🦄
-Support [me](http://www.paypal.me/jdnichollsc/2), if you do too.
-
 ## Happy coding 💯
 Made with ❤️
 
